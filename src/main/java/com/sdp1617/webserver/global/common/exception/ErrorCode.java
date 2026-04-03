@@ -34,8 +34,7 @@ public enum ErrorCode implements ApiErrorCode {
     PARAMETER_VALIDATION_ERROR("COMMON422", "파라미터 검증 에러입니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     PARAMETER_GRAMMAR_ERROR("COMMON422", "파라미터 문법 에러입니다.", HttpStatus.UNPROCESSABLE_ENTITY);
 
-    private final String code;
+    private final String errorCode;
     private final String message;
     private final HttpStatus status;
-
-    }
+}
