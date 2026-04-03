@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode implements ErrorCodeInterface{
+public enum ErrorCode implements ApiErrorCode {
 
     /**
      * 에러코드 규칙
