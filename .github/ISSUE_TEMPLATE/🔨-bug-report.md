@@ -2,7 +2,7 @@
 name: "\U0001F528 Bug report"
 about: 버그 수정
 title: 'fix: '
-labels: feat
+labels: fix
 assignees: ''
 
 ---
