@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-## ✨ Description
+## 📌 Description
 <!-- 어떤 기능인지 설명해주세요 -->
 - 설명
 
-## 📐 Task
+## ✅ Task
 - [ ] API/기능 동작
 - [ ] 테스트/검증
 - [ ] 문서 업데이트(필요 시)
