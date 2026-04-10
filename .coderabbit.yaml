@@ -1,0 +1,17 @@
+language: ko-KR
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: '## 요약'
+  poem: false
+  review_status: false
+  collapse_walkthrough: false
+  sequence_diagrams: false
+  changed_files_summary: true
+  auto_review:
+    enabled: true
+
+chat:
+  auto_reply: true
