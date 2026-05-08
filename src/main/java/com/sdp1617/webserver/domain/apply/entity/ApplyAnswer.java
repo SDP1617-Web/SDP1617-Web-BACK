@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "application_answer")
+@Table(
+        name = "application_answer",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"application_id", "question_id"})
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplyAnswer extends BaseEntity {

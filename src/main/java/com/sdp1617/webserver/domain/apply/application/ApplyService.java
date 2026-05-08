@@ -58,6 +58,10 @@ public class ApplyService {
                 .map(ApplySubmitRequest.AnswerRequest::questionId)
                 .toList();
 
+        if (questionIds.size() != questionIds.stream().distinct().count()) {
+            throw new ApplicationException(ApplyErrorCode.DUPLICATE_QUESTION);
+        }
+
         List<Question> validQuestions = questionRepository.findValidQuestions(questionIds, recruitmentId, request.department());
 
         if (validQuestions.size() != questionIds.size()) {
