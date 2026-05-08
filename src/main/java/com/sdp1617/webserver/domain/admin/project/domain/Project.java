@@ -54,6 +54,7 @@ public class Project extends BaseTimeEntity {
     public Project(String name, String summary, String description, String thumbnailUrl,
                    String githubUrl, String techStack, ProjectStatus status,
                    LocalDate startDate, LocalDate endDate) {
+        validateDates(startDate, endDate);
         this.name = name;
         this.summary = summary;
         this.description = description;
@@ -68,6 +69,7 @@ public class Project extends BaseTimeEntity {
     public void update(String name, String summary, String description, String thumbnailUrl,
                        String githubUrl, String techStack, ProjectStatus status,
                        LocalDate startDate, LocalDate endDate) {
+        validateDates(startDate, endDate);
         this.name = name;
         this.summary = summary;
         this.description = description;
@@ -77,5 +79,11 @@ public class Project extends BaseTimeEntity {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    private void validateDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("endDate must be on or after startDate");
+        }
     }
 }

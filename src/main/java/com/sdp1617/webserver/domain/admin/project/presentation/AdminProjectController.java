@@ -7,7 +7,10 @@ import com.sdp1617.webserver.domain.admin.project.application.dto.response.Proje
 import com.sdp1617.webserver.global.common.response.result.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import java.util.List;
 @Tag(name = "Admin Project", description = "Admin project CRUD API")
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/api/admin/projects")
 public class AdminProjectController {
 
@@ -35,28 +39,28 @@ public class AdminProjectController {
 
     @GetMapping("/{projectId}")
     @Operation(summary = "Get project detail")
-    public SuccessResponse<ProjectResponse> getProject(@PathVariable Long projectId) {
+    public SuccessResponse<ProjectResponse> getProject(@PathVariable @Positive Long projectId) {
         return SuccessResponse.ok(projectService.getProject(projectId));
     }
 
     @PostMapping
     @Operation(summary = "Create project")
-    public SuccessResponse<ProjectResponse> createProject(@RequestBody ProjectCreateRequest request) {
+    public SuccessResponse<ProjectResponse> createProject(@RequestBody @Valid ProjectCreateRequest request) {
         return SuccessResponse.ok(projectService.createProject(request));
     }
 
     @PutMapping("/{projectId}")
     @Operation(summary = "Update project")
     public SuccessResponse<ProjectResponse> updateProject(
-            @PathVariable Long projectId,
-            @RequestBody ProjectUpdateRequest request
+            @PathVariable @Positive Long projectId,
+            @RequestBody @Valid ProjectUpdateRequest request
     ) {
         return SuccessResponse.ok(projectService.updateProject(projectId, request));
     }
 
     @DeleteMapping("/{projectId}")
     @Operation(summary = "Delete project")
-    public SuccessResponse<Void> deleteProject(@PathVariable Long projectId) {
+    public SuccessResponse<Void> deleteProject(@PathVariable @Positive Long projectId) {
         projectService.deleteProject(projectId);
         return SuccessResponse.ok();
     }
