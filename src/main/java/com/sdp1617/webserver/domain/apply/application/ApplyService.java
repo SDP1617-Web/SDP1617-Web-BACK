@@ -5,6 +5,7 @@ import com.sdp1617.webserver.domain.applicant.infrastructure.ApplicantRepository
 import com.sdp1617.webserver.domain.apply.application.dto.request.ApplySubmitRequest;
 import com.sdp1617.webserver.domain.apply.application.dto.response.ApplySubmitResponse;
 import com.sdp1617.webserver.domain.apply.application.exception.ApplyErrorCode;
+import com.sdp1617.webserver.domain.recruitment.application.exception.RecruitmentErrorCode;
 import com.sdp1617.webserver.domain.apply.entity.Apply;
 import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
 import com.sdp1617.webserver.domain.apply.infrastructure.ApplyAnswerRepository;
@@ -36,7 +37,7 @@ public class ApplyService {
 
     public ApplySubmitResponse submit(Long recruitmentId, ApplySubmitRequest request) {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
-                .orElseThrow(() -> new ApplicationException(ApplyErrorCode.RECRUITMENT_NOT_FOUND));
+                .orElseThrow(() -> new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND));
 
         recruitment.validateActive();
 
