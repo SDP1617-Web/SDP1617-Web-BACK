@@ -1,6 +1,6 @@
 INSERT INTO recruitment (title, semester, start_at, deadline_at, is_active, created_at, updated_at)
 SELECT '2026 1학기 모집', '2026-1', '2026-01-01 00:00:00', '2026-01-31 23:59:59', true, NOW(), NOW()
-WHERE NOT EXISTS (SELECT 1 FROM recruitment WHERE semester = '2025-1');
+WHERE NOT EXISTS (SELECT 1 FROM recruitment WHERE semester = '2026-1');
 
 INSERT INTO question (recruitment_id, department, content, max_length, sequence, created_at, updated_at)
 SELECT 1, NULL, '자기소개를 해주세요.', 500, 1, NOW(), NOW()

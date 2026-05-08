@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "recruitment")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Recruitment extends BaseEntity {
 
     @Column(nullable = false, length = 100)
@@ -31,17 +34,9 @@ public class Recruitment extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime deadlineAt;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isActive = true;
-
-    @Builder
-    public Recruitment(String title, String semester, LocalDateTime startAt, LocalDateTime deadlineAt, boolean isActive) {
-        this.title = title;
-        this.semester = semester;
-        this.startAt = startAt;
-        this.deadlineAt = deadlineAt;
-        this.isActive = isActive;
-    }
 
     public void validateActive() {
         LocalDateTime now = LocalDateTime.now();
