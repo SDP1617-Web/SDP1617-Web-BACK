@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.portfolio.application;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.sdp1617.webserver.domain.portfolio.application.exception.PortfolioErrorCode;
 import com.sdp1617.webserver.global.common.exception.ApplicationException;
@@ -23,7 +24,7 @@ public class S3Uploader {
     private static final List<String> ALLOWED_EXTENSIONS = List.of("pdf", "zip", "png", "jpg", "jpeg");
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -38,7 +39,7 @@ public class S3Uploader {
 
         try {
             amazonS3Client.putObject(bucket, s3Key, file.getInputStream(), metadata);
-        } catch (IOException e) {
+        } catch (IOException | AmazonClientException e) {
             log.error("S3 파일 업로드 실패: key={}, error={}", s3Key, e.getMessage(), e);
             throw new ApplicationException(PortfolioErrorCode.FILE_UPLOAD_FAILED);
         }
