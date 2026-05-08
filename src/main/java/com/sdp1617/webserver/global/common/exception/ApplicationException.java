@@ -17,6 +17,6 @@ public class ApplicationException extends RuntimeException {
     public ApplicationException(final ApiErrorCode errorCode, String message){
         super(message);
         this.errorCode=errorCode;
-        this.data=getData();
+        this.data=null;
     }
 }
