@@ -12,6 +12,9 @@ reviews:
   changed_files_summary: true
   auto_review:
     enabled: true
+    base_branches:
+      - develop
+      - "feat/.*"
 
 chat:
   auto_reply: true
