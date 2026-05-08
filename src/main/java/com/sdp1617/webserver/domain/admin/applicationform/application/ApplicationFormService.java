@@ -1,8 +1,8 @@
 package com.sdp1617.webserver.domain.admin.applicationform.application;
 
-import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormPreviewResponse;
+import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormDetailResponse;
 
 public interface ApplicationFormService {
 
-    ApplicationFormPreviewResponse getApplicationForm(Long applicationFormId);
+    ApplicationFormDetailResponse getApplicationForm(Long applicationId);
 }

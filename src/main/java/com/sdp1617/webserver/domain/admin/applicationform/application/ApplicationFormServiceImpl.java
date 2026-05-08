@@ -1,20 +1,36 @@
 package com.sdp1617.webserver.domain.admin.applicationform.application;
 
-import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormPreviewResponse;
+import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormDetailResponse;
+import com.sdp1617.webserver.domain.admin.applicationform.domain.ApplicationFormAnswerRepository;
+import com.sdp1617.webserver.domain.admin.applicationform.domain.ApplicationFormRepository;
+import com.sdp1617.webserver.domain.apply.entity.Apply;
+import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
+import com.sdp1617.webserver.global.common.exception.ApplicationException;
+import com.sdp1617.webserver.global.common.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ApplicationFormServiceImpl implements ApplicationFormService {
 
+    private final ApplicationFormRepository applicationFormRepository;
+    private final ApplicationFormAnswerRepository applicationFormAnswerRepository;
+
     @Override
-    public ApplicationFormPreviewResponse getApplicationForm(Long applicationFormId) {
-        if (applicationFormId == null || applicationFormId <= 0) {
-            throw new IllegalArgumentException("applicationFormId must be positive: " + applicationFormId);
+    public ApplicationFormDetailResponse getApplicationForm(Long applicationId) {
+        if (applicationId == null || applicationId <= 0) {
+            throw new IllegalArgumentException("applicationId must be positive: " + applicationId);
         }
 
-        return new ApplicationFormPreviewResponse(
-                applicationFormId,
-                "지원서 조회용 임시 응답입니다. 실제 엔티티 연결 전까지는 이 형태를 사용합니다."
-        );
+        Apply apply = applicationFormRepository.findById(applicationId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.NOT_FOUND, "Application not found: " + applicationId));
+
+        List<ApplyAnswer> applyAnswers = applicationFormAnswerRepository.findAllByApplicationIdOrderByQuestionSequenceAsc(applicationId);
+        return ApplicationFormDetailResponse.from(apply, applyAnswers);
     }
 }

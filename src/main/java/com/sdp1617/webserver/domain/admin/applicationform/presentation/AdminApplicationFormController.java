@@ -1,7 +1,7 @@
 package com.sdp1617.webserver.domain.admin.applicationform.presentation;
 
 import com.sdp1617.webserver.domain.admin.applicationform.application.ApplicationFormService;
-import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormPreviewResponse;
+import com.sdp1617.webserver.domain.admin.applicationform.application.dto.response.ApplicationFormDetailResponse;
 import com.sdp1617.webserver.global.common.response.result.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +22,9 @@ public class AdminApplicationFormController {
 
     private final ApplicationFormService applicationFormService;
 
-    @GetMapping("/{applicationFormId}")
+    @GetMapping("/{applicationId}")
     @Operation(summary = "Get application detail")
-    public SuccessResponse<ApplicationFormPreviewResponse> getApplicationForm(@PathVariable @Positive Long applicationFormId) {
-        return SuccessResponse.ok(applicationFormService.getApplicationForm(applicationFormId));
+    public SuccessResponse<ApplicationFormDetailResponse> getApplicationForm(@PathVariable @Positive Long applicationId) {
+        return SuccessResponse.ok(applicationFormService.getApplicationForm(applicationId));
     }
 }
