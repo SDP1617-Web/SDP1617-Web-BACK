@@ -42,7 +42,8 @@ public class ApplyController {
     public SuccessResponse<ApplySubmitResponse> submit(
             @Parameter(description = "모집 공고 ID", example = "1")
             @PathVariable Long recruitmentId,
-            @RequestBody @Valid ApplySubmitRequest request
+            @RequestBody
+            @Valid ApplySubmitRequest request
     ) {
         return SuccessResponse.ok(applicationService.submit(recruitmentId, request));
     }
