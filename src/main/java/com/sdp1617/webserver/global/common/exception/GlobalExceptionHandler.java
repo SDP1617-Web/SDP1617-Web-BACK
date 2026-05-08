@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,6 +29,13 @@ public class GlobalExceptionHandler {
         log.error("IllegalArgumentException: {}", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(ErrorCode.INVALID_REQUEST.getErrorCode(), ErrorCode.INVALID_REQUEST.getMessage()));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse<Void>> handleAuthenticationException(AuthenticationException e) {
+        log.error("AuthenticationException: {}", e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.of(ErrorCode.UNAUTHORIZED.getErrorCode(), ErrorCode.UNAUTHORIZED.getMessage()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -65,6 +73,16 @@ public class GlobalExceptionHandler {
                         ErrorCode.PARAMETER_VALIDATION_ERROR.getErrorCode(),
                         ErrorCode.PARAMETER_VALIDATION_ERROR.getMessage(),
                         errors
+                ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse<Void>> handleGenericException(Exception e) {
+        log.error("Unhandled exception", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.of(
+                        ErrorCode.SERVER_UNTRACKED_ERROR.getErrorCode(),
+                        ErrorCode.SERVER_UNTRACKED_ERROR.getMessage()
                 ));
     }
 }

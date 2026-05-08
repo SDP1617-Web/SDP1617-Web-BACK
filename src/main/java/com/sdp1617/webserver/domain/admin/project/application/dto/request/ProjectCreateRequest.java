@@ -27,16 +27,10 @@ public record ProjectCreateRequest(
         if (summary == null || summary.isBlank()) {
             throw new IllegalArgumentException("summary must not be blank");
         }
-        if (description == null || description.isBlank()) {
-            throw new IllegalArgumentException("description must not be blank");
-        }
         if (status == null) {
             throw new IllegalArgumentException("status must not be null");
         }
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("startDate and endDate must not be null");
-        }
-        if (startDate.isAfter(endDate)) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("startDate must be on or before endDate");
         }
     }

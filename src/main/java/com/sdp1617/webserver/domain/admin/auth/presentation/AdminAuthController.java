@@ -4,16 +4,15 @@ import com.sdp1617.webserver.domain.admin.auth.application.dto.request.AdminLogi
 import com.sdp1617.webserver.domain.admin.auth.application.dto.response.AdminLoginResponse;
 import com.sdp1617.webserver.global.common.response.result.SuccessResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,24 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminAuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository;
 
     @PostMapping("/login")
     public SuccessResponse<AdminLoginResponse> login(
             @RequestBody @Valid AdminLoginRequest request,
-            HttpServletRequest httpServletRequest
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse
     ) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
 
         SecurityContext securityContext = new SecurityContextImpl(authentication);
-        SecurityContextHolder.setContext(securityContext);
-
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute(
-                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                securityContext
-        );
+        securityContextRepository.saveContext(securityContext, httpServletRequest, httpServletResponse);
 
         return SuccessResponse.ok(new AdminLoginResponse(
                 authentication.getName(),
