@@ -1,6 +1,6 @@
 package com.sdp1617.webserver.domain.recruitment.entity;
 
-import com.sdp1617.webserver.domain.apply.application.exception.ApplicationErrorCode;
+import com.sdp1617.webserver.domain.apply.application.exception.ApplyErrorCode;
 import com.sdp1617.webserver.global.common.entity.BaseEntity;
 import com.sdp1617.webserver.global.common.exception.ApplicationException;
 import jakarta.persistence.Column;
@@ -46,7 +46,7 @@ public class Recruitment extends BaseEntity {
     public void validateActive() {
         LocalDateTime now = LocalDateTime.now();
         if (!isActive || now.isBefore(startAt) || now.isAfter(deadlineAt)) {
-            throw new ApplicationException(ApplicationErrorCode.RECRUITMENT_NOT_ACTIVE);
+            throw new ApplicationException(ApplyErrorCode.RECRUITMENT_NOT_ACTIVE);
         }
     }
 }

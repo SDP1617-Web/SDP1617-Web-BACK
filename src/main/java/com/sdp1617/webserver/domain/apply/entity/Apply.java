@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Application extends BaseEntity {
+public class Apply extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruitment_id", nullable = false)
@@ -34,7 +34,7 @@ public class Application extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ApplicationStatus status;
+    private ApplyStatus status;
 
     @Column(nullable = false)
     private LocalDateTime submittedAt;
@@ -43,11 +43,11 @@ public class Application extends BaseEntity {
     private String reviewerNote;
 
     @Builder
-    public Application(Recruitment recruitment, Applicant applicant, Department department) {
+    public Apply(Recruitment recruitment, Applicant applicant, Department department) {
         this.recruitment = recruitment;
         this.applicant = applicant;
         this.department = department;
-        this.status = ApplicationStatus.PENDING;
+        this.status = ApplyStatus.PENDING;
         this.submittedAt = LocalDateTime.now();
     }
 }

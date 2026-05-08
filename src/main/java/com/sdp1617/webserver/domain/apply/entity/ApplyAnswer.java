@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "application_answer")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ApplicationAnswer extends BaseEntity {
+public class ApplyAnswer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", nullable = false)
-    private Application application;
+    private Apply application;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
@@ -26,7 +26,7 @@ public class ApplicationAnswer extends BaseEntity {
     private String content;
 
     @Builder
-    public ApplicationAnswer(Application application, Question question, String content) {
+    public ApplyAnswer(Apply application, Question question, String content) {
         this.application = application;
         this.question = question;
         this.content = content;
