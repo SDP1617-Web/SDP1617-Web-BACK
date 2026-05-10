@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.apply.application.dto.request;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
+import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
@@ -33,6 +34,8 @@ public record ApplySubmitRequest(
 
         @NotNull
         Department department,
+
+        TechRole techRole,
 
         @NotNull
         @Size(min = 1)

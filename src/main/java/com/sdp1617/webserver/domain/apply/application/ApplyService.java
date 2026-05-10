@@ -7,6 +7,7 @@ import com.sdp1617.webserver.domain.apply.application.dto.response.ApplySubmitRe
 import com.sdp1617.webserver.domain.apply.application.exception.ApplyErrorCode;
 import com.sdp1617.webserver.domain.recruitment.application.exception.RecruitmentErrorCode;
 import com.sdp1617.webserver.domain.apply.entity.Apply;
+import com.sdp1617.webserver.domain.apply.entity.Department;
 import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
 import com.sdp1617.webserver.domain.apply.infrastructure.ApplyAnswerRepository;
 import com.sdp1617.webserver.domain.apply.infrastructure.ApplyRepository;
@@ -55,6 +56,10 @@ public class ApplyService {
             throw new ApplicationException(ApplyErrorCode.ALREADY_APPLIED);
         }
 
+        if (request.department() == Department.TECH && request.techRole() == null) {
+            throw new ApplicationException(ApplyErrorCode.TECH_ROLE_REQUIRED);
+        }
+
         List<Long> questionIds = request.answers().stream()
                 .map(ApplySubmitRequest.AnswerRequest::questionId)
                 .toList();
@@ -63,13 +68,13 @@ public class ApplyService {
             throw new ApplicationException(ApplyErrorCode.DUPLICATE_QUESTION);
         }
 
-        List<Question> validQuestions = questionRepository.findValidQuestions(questionIds, recruitmentId, request.department());
+        List<Question> validQuestions = questionRepository.findValidQuestions(questionIds, recruitmentId, request.department(), request.techRole());
 
         if (validQuestions.size() != questionIds.size()) {
             throw new ApplicationException(ApplyErrorCode.INVALID_QUESTION);
         }
 
-        List<Question> requiredQuestions = questionRepository.findRequiredQuestions(recruitmentId, request.department());
+        List<Question> requiredQuestions = questionRepository.findRequiredQuestions(recruitmentId, request.department(), request.techRole());
         Set<Long> answeredIds = questionIds.stream().collect(Collectors.toSet());
         boolean hasMissing = requiredQuestions.stream().anyMatch(q -> !answeredIds.contains(q.getId()));
         if (hasMissing) {
@@ -80,6 +85,7 @@ public class ApplyService {
                 .recruitment(recruitment)
                 .applicant(applicant)
                 .department(request.department())
+                .techRole(request.techRole())
                 .build());
 
         Map<Long, Question> questionMap = validQuestions.stream()
