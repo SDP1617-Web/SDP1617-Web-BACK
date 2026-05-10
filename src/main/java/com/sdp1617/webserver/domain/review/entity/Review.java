@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "review")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Review extends BaseEntity {
 
     @Column(nullable = false, length = 50)
@@ -27,11 +30,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Builder
-    public Review(String name, int generation, String team, String content) {
-        this.name = name;
-        this.generation = generation;
-        this.team = team;
-        this.content = content;
-    }
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean isDisplay = true;
 }

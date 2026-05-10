@@ -16,7 +16,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     public List<ReviewResponse> getReviews() {
-        return reviewRepository.findAll().stream()
+        return reviewRepository.findAllByIsDisplayTrueOrderByGenerationDesc().stream()
                 .map(ReviewResponse::from)
                 .toList();
     }
