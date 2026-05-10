@@ -35,7 +35,7 @@ public class S3Uploader {
         String s3Key = dirName + "/" + UUID.randomUUID() + "." + extension;
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
-        metadata.setContentType(file.getContentType());
+        metadata.setContentType(toSafeContentType(extension));
 
         try {
             amazonS3Client.putObject(bucket, s3Key, file.getInputStream(), metadata);
@@ -45,6 +45,16 @@ public class S3Uploader {
         }
 
         return amazonS3Client.getUrl(bucket, s3Key).toString();
+    }
+
+    private String toSafeContentType(String extension) {
+        return switch (extension) {
+            case "pdf" -> "application/pdf";
+            case "zip" -> "application/zip";
+            case "png" -> "image/png";
+            case "jpg", "jpeg" -> "image/jpeg";
+            default -> "application/octet-stream";
+        };
     }
 
     private String validateFile(MultipartFile file) {
