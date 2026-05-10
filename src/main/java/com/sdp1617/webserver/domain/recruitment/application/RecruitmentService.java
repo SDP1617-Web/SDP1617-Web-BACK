@@ -23,14 +23,15 @@ public class RecruitmentService {
     private final QuestionRepository questionRepository;
 
     public RecruitmentResponse getActive() {
-        Recruitment recruitment = recruitmentRepository.findFirstByIsActiveTrue()
+        Recruitment recruitment = recruitmentRepository.findFirstByIsActiveTrueOrderByCreatedAtDesc()
                 .orElseThrow(() -> new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND));
         return RecruitmentResponse.from(recruitment);
     }
 
     public List<QuestionResponse> getQuestions(Long recruitmentId, Department department) {
-        recruitmentRepository.findById(recruitmentId)
-                .orElseThrow(() -> new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND));
+        if (!recruitmentRepository.existsById(recruitmentId)) {
+            throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
+        }
         return questionRepository.findRequiredQuestions(recruitmentId, department).stream()
                 .map(QuestionResponse::from)
                 .toList();
