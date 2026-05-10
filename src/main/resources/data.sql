@@ -21,3 +21,11 @@ WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence =
 INSERT INTO question (recruitment_id, department, content, max_length, sequence, created_at, updated_at)
 SELECT 1, 'RESEARCH', '관심 있는 연구 분야를 작성해주세요.', 500, 3, NOW(), NOW()
 WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence = 3 AND department = 'RESEARCH');
+
+INSERT INTO question (recruitment_id, department, tech_role, content, max_length, sequence, created_at, updated_at)
+SELECT 1, 'TECH', 'FRONTEND', '사용해본 프론트엔드 프레임워크와 경험을 작성해주세요.', 500, 4, NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence = 4 AND tech_role = 'FRONTEND');
+
+INSERT INTO question (recruitment_id, department, tech_role, content, max_length, sequence, created_at, updated_at)
+SELECT 1, 'TECH', 'BACKEND', '사용해본 백엔드 기술 스택과 경험을 작성해주세요.', 500, 4, NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence = 4 AND tech_role = 'BACKEND');
