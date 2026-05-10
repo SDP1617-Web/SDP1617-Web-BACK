@@ -34,6 +34,9 @@ public class RecruitmentService {
         if (!recruitmentRepository.existsById(recruitmentId)) {
             throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
         }
+        if (department == Department.TECH && techRole == null) {
+            throw new ApplicationException(RecruitmentErrorCode.TECH_ROLE_REQUIRED);
+        }
         return questionRepository.findRequiredQuestions(recruitmentId, department, techRole).stream()
                 .map(QuestionResponse::from)
                 .toList();
