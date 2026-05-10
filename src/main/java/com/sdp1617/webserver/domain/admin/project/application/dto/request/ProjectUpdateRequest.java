@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.admin.project.application.dto.request;
 
 import com.sdp1617.webserver.domain.admin.project.domain.ProjectStatus;
+import com.sdp1617.webserver.global.common.exception.InvalidArgumentException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,7 +23,7 @@ public record ProjectUpdateRequest(
 ) {
     public ProjectUpdateRequest {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("startDate must be on or before endDate");
+            throw new InvalidArgumentException("startDate must be on or before endDate");
         }
     }
 }

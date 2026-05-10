@@ -7,6 +7,7 @@ import com.sdp1617.webserver.domain.apply.entity.Apply;
 import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
 import com.sdp1617.webserver.global.common.exception.ApplicationException;
 import com.sdp1617.webserver.global.common.exception.ErrorCode;
+import com.sdp1617.webserver.global.common.exception.InvalidArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class ApplicationFormServiceImpl implements ApplicationFormService {
     @Override
     public ApplicationFormDetailResponse getApplicationForm(Long applicationId) {
         if (applicationId == null || applicationId <= 0) {
-            throw new IllegalArgumentException("applicationId must be positive: " + applicationId);
+            throw new InvalidArgumentException("applicationId must be positive: " + applicationId);
         }
 
         Apply apply = applicationFormRepository.findById(applicationId)

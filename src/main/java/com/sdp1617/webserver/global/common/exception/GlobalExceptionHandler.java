@@ -19,14 +19,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponse<Void>> handleApplicationException(ApplicationException e) {
         ApiErrorCode errorCode = e.getErrorCode();
-        log.error("ApplicationException: {}", e.getMessage(), e);
+        if (errorCode.getStatus().is4xxClientError()) {
+            log.warn("ApplicationException: {}", e.getMessage());
+        } else {
+            log.error("ApplicationException: {}", e.getMessage(), e);
+        }
         return ResponseEntity.status(errorCode.getStatus())
                 .body(ErrorResponse.of(errorCode.getErrorCode(), errorCode.getMessage()));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse<Void>> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.error("IllegalArgumentException: {}", e.getMessage(), e);
+    @ExceptionHandler(InvalidArgumentException.class)
+    public ResponseEntity<ErrorResponse<Void>> handleInvalidArgumentException(InvalidArgumentException e) {
+        log.warn("InvalidArgumentException: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(ErrorCode.INVALID_REQUEST.getErrorCode(), ErrorCode.INVALID_REQUEST.getMessage()));
     }

@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.admin.project.domain;
 
 import com.sdp1617.webserver.global.common.domain.BaseTimeEntity;
+import com.sdp1617.webserver.global.common.exception.InvalidArgumentException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -83,7 +84,7 @@ public class Project extends BaseTimeEntity {
 
     private void validateDates(LocalDate startDate, LocalDate endDate) {
         if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("endDate must be on or after startDate");
+            throw new InvalidArgumentException("endDate must be on or after startDate");
         }
     }
 }
