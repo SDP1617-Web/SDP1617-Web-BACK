@@ -4,10 +4,10 @@ import com.sdp1617.webserver.global.common.response.ErrorResponse;
 import com.sdp1617.webserver.global.common.response.result.ExceptionResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -39,6 +39,16 @@ public class GlobalExceptionHandler {
                         ErrorCode.PARAMETER_VALIDATION_ERROR.getErrorCode(),
                         ErrorCode.PARAMETER_VALIDATION_ERROR.getMessage(),
                         errors
+                ));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse<Void>> handleTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of(
+                        ErrorCode.PARAMETER_VALIDATION_ERROR.getErrorCode(),
+                        ErrorCode.PARAMETER_VALIDATION_ERROR.getMessage()
                 ));
     }
 
