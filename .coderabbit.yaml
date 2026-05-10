@@ -6,12 +6,15 @@ reviews:
   high_level_summary: true
   high_level_summary_placeholder: '## 요약'
   poem: false
-  review_status: false
+  review_status: true
   collapse_walkthrough: false
   sequence_diagrams: false
   changed_files_summary: true
   auto_review:
     enabled: true
+    base_branches:
+      - develop
+      - "feat/.*"
 
 chat:
   auto_reply: true
