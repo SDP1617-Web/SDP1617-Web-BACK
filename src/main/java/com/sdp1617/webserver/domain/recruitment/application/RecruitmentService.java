@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.recruitment.application;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
+import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.QuestionResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.RecruitmentResponse;
 import com.sdp1617.webserver.domain.recruitment.application.exception.RecruitmentErrorCode;
@@ -29,11 +30,11 @@ public class RecruitmentService {
         return RecruitmentResponse.from(recruitment);
     }
 
-    public List<QuestionResponse> getQuestions(Long recruitmentId, Department department) {
+    public List<QuestionResponse> getQuestions(Long recruitmentId, Department department, TechRole techRole) {
         if (!recruitmentRepository.existsById(recruitmentId)) {
             throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
         }
-        return questionRepository.findRequiredQuestions(recruitmentId, department).stream()
+        return questionRepository.findRequiredQuestions(recruitmentId, department, techRole).stream()
                 .map(QuestionResponse::from)
                 .toList();
     }
