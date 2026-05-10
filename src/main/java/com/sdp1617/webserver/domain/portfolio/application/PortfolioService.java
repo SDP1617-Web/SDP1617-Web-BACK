@@ -8,6 +8,7 @@ import com.sdp1617.webserver.domain.portfolio.entity.Portfolio;
 import com.sdp1617.webserver.domain.portfolio.infrastructure.PortfolioRepository;
 import com.sdp1617.webserver.global.common.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,12 +32,15 @@ public class PortfolioService {
 
         String fileUrl = s3Uploader.upload(file, "portfolio");
 
-        Portfolio portfolio = portfolioRepository.save(Portfolio.builder()
-                .application(apply)
-                .fileUrl(fileUrl)
-                .fileName(file.getOriginalFilename() != null ? file.getOriginalFilename() : "")
-                .build());
-
-        return new PortfolioUploadResponse(portfolio.getId(), portfolio.getFileUrl(), portfolio.getFileName());
+        try {
+            Portfolio portfolio = portfolioRepository.save(Portfolio.builder()
+                    .application(apply)
+                    .fileUrl(fileUrl)
+                    .fileName(file.getOriginalFilename() != null ? file.getOriginalFilename() : "")
+                    .build());
+            return new PortfolioUploadResponse(portfolio.getId(), portfolio.getFileUrl(), portfolio.getFileName());
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException(PortfolioErrorCode.PORTFOLIO_ALREADY_EXISTS);
+        }
     }
 }
