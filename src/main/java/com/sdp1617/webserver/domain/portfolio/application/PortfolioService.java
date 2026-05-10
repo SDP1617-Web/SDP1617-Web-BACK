@@ -9,10 +9,12 @@ import com.sdp1617.webserver.domain.portfolio.infrastructure.PortfolioRepository
 import com.sdp1617.webserver.global.common.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PortfolioService {
 
     private final ApplyRepository applyRepository;
@@ -32,7 +34,7 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.save(Portfolio.builder()
                 .application(apply)
                 .fileUrl(fileUrl)
-                .fileName(file.getOriginalFilename())
+                .fileName(file.getOriginalFilename() != null ? file.getOriginalFilename() : "")
                 .build());
 
         return new PortfolioUploadResponse(portfolio.getId(), portfolio.getFileUrl(), portfolio.getFileName());
