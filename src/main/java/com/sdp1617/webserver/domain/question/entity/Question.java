@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.question.entity;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
+import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.recruitment.entity.Recruitment;
 import com.sdp1617.webserver.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -23,6 +24,10 @@ public class Question extends BaseEntity {
     @Column
     private Department department;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private TechRole techRole;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -33,9 +38,10 @@ public class Question extends BaseEntity {
     private int sequence;
 
     @Builder
-    public Question(Recruitment recruitment, Department department, String content, int maxLength, int sequence) {
+    public Question(Recruitment recruitment, Department department, TechRole techRole, String content, int maxLength, int sequence) {
         this.recruitment = recruitment;
         this.department = department;
+        this.techRole = techRole;
         this.content = content;
         this.maxLength = maxLength;
         this.sequence = sequence;
