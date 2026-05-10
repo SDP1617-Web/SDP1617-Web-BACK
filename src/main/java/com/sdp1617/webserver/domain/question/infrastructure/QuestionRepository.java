@@ -22,7 +22,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q FROM Question q " +
             "WHERE q.recruitment.id = :recruitmentId " +
-            "AND (q.department IS NULL OR q.department = :department)")
+            "AND (q.department IS NULL OR q.department = :department) " +
+            "ORDER BY q.sequence ASC")
     List<Question> findRequiredQuestions(
             @Param("recruitmentId") Long recruitmentId,
             @Param("department") Department department
