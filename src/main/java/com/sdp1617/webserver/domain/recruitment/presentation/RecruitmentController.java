@@ -45,7 +45,7 @@ public class RecruitmentController {
     public SuccessResponse<List<QuestionResponse>> getQuestions(
             @Parameter(description = "모집 공고 ID", example = "1")
             @PathVariable Long recruitmentId,
-            @Parameter(description = "부서 (RESEARCH / DESIGN / TECH)", example = "TECH")
+            @Parameter(description = "부서 (RESEARCH / DESIGN / TECH), 반드시 대문자로 입력", example = "TECH")
             @RequestParam Department department
     ) {
         return SuccessResponse.ok(recruitmentService.getQuestions(recruitmentId, department));
