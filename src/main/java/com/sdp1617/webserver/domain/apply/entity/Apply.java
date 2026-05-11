@@ -33,6 +33,10 @@ public class Apply extends BaseEntity {
     private Department department;
 
     @Enumerated(EnumType.STRING)
+    @Column
+    private TechRole techRole;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ApplyStatus status;
 
@@ -43,10 +47,11 @@ public class Apply extends BaseEntity {
     private String reviewerNote;
 
     @Builder
-    public Apply(Recruitment recruitment, Applicant applicant, Department department) {
+    public Apply(Recruitment recruitment, Applicant applicant, Department department, TechRole techRole) {
         this.recruitment = recruitment;
         this.applicant = applicant;
         this.department = department;
+        this.techRole = techRole;
         this.status = ApplyStatus.PENDING;
         this.submittedAt = LocalDateTime.now();
     }

@@ -1,6 +1,7 @@
 package com.sdp1617.webserver.domain.recruitment.presentation;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
+import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.recruitment.application.RecruitmentService;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.QuestionResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.RecruitmentResponse;
@@ -46,8 +47,10 @@ public class RecruitmentController {
             @Parameter(description = "모집 공고 ID", example = "1")
             @PathVariable Long recruitmentId,
             @Parameter(description = "부서 (RESEARCH / DESIGN / TECH), 반드시 대문자로 입력", example = "TECH")
-            @RequestParam Department department
+            @RequestParam Department department,
+            @Parameter(description = "테크팀 세부 직무 (FRONTEND / BACKEND), TECH 부서 선택 시 필수, 반드시 대문자로 입력", example = "BACKEND")
+            @RequestParam(required = false) TechRole techRole
     ) {
-        return SuccessResponse.ok(recruitmentService.getQuestions(recruitmentId, department));
+        return SuccessResponse.ok(recruitmentService.getQuestions(recruitmentId, department, techRole));
     }
 }
