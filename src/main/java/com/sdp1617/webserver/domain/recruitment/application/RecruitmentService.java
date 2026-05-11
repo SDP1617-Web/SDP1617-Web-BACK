@@ -34,10 +34,12 @@ public class RecruitmentService {
         if (!recruitmentRepository.existsById(recruitmentId)) {
             throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
         }
-        if (department == Department.TECH && techRole == null) {
+        TechRole effectiveTechRole = department == Department.TECH ? techRole : null;
+
+        if (department == Department.TECH && effectiveTechRole == null) {
             throw new ApplicationException(RecruitmentErrorCode.TECH_ROLE_REQUIRED);
         }
-        return questionRepository.findRequiredQuestions(recruitmentId, department, techRole).stream()
+        return questionRepository.findRequiredQuestions(recruitmentId, department, effectiveTechRole).stream()
                 .map(QuestionResponse::from)
                 .toList();
     }
