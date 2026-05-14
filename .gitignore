@@ -30,6 +30,7 @@ out/
 /src/main/resources/application-prod.yml
 **/application-local.yml
 .env
+config/**
 
 ### NetBeans ###
 /nbproject/private/
