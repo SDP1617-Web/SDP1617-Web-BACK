@@ -40,7 +40,10 @@ public record ApplySubmitRequest(
         @NotNull
         @Size(min = 1)
         @Valid
-        List<AnswerRequest> answers
+        List<AnswerRequest> answers,
+
+        @NotEmpty
+        List<Long> interviewSlotIds
 ) {
     public record AnswerRequest(
             @NotNull Long questionId,

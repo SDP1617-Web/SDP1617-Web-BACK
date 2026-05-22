@@ -17,14 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/admin/applications")
+@RequestMapping("/api/admin/recruitments/{recruitmentId}/applications")
 public class AdminApplicationFormController {
 
     private final ApplicationFormService applicationFormService;
 
     @GetMapping("/{applicationId}")
-    @Operation(summary = "Get application detail")
-    public SuccessResponse<ApplicationFormDetailResponse> getApplicationForm(@PathVariable @Positive Long applicationId) {
-        return SuccessResponse.ok(applicationFormService.getApplicationForm(applicationId));
+    @Operation(summary = "지원서 상세 조회")
+    public SuccessResponse<ApplicationFormDetailResponse> getApplicationForm(
+            @PathVariable @Positive Long recruitmentId,
+            @PathVariable @Positive Long applicationId
+    ) {
+        return SuccessResponse.ok(applicationFormService.getApplicationForm(recruitmentId, applicationId));
     }
 }

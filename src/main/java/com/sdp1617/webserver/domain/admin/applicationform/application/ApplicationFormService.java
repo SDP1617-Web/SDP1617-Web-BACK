@@ -4,5 +4,5 @@ import com.sdp1617.webserver.domain.admin.applicationform.application.dto.respon
 
 public interface ApplicationFormService {
 
-    ApplicationFormDetailResponse getApplicationForm(Long applicationId);
+    ApplicationFormDetailResponse getApplicationForm(Long recruitmentId, Long applicationId);
 }
