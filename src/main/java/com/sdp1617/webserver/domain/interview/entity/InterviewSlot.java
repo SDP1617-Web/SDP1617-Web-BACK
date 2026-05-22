@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "interview_slot")
+@Table(
+        name = "interview_slot",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"recruitment_id", "slot_date_time"})
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InterviewSlot extends BaseEntity {

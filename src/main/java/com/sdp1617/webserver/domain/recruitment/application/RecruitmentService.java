@@ -50,7 +50,7 @@ public class RecruitmentService {
                 .toList();
 
         List<InterviewSlotSimpleResponse> interviewSlots = interviewSlotRepository
-                .findAllByRecruitmentIdOrderBySlotDateTimeAsc(recruitmentId).stream()
+                .findAllByRecruitmentIdAndSlotDateTimeAfterOrderBySlotDateTimeAsc(recruitmentId, LocalDateTime.now()).stream()
                 .map(InterviewSlotSimpleResponse::from)
                 .toList();
 

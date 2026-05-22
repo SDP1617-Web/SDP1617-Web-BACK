@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(
         name = "interview_slot_selection",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"interview_slot_id", "apply_id"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"interview_slot_id", "apply_id"}),
+        indexes = @Index(name = "idx_interview_slot_selection_apply_id", columnList = "apply_id")
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
