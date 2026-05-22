@@ -2,6 +2,7 @@ package com.sdp1617.webserver.domain.apply.application.dto.request;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
 import com.sdp1617.webserver.domain.apply.entity.TechRole;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
@@ -43,6 +44,7 @@ public record ApplySubmitRequest(
         List<AnswerRequest> answers,
 
         @NotEmpty
+        @Schema(description = "면접 가능 시간 슬롯 ID 목록 (1개 이상 필수)", example = "[1, 2]")
         List<Long> interviewSlotIds
 ) {
     public record AnswerRequest(
