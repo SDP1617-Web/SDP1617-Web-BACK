@@ -3,7 +3,7 @@ package com.sdp1617.webserver.domain.recruitment.presentation;
 import com.sdp1617.webserver.domain.apply.entity.Department;
 import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.recruitment.application.RecruitmentService;
-import com.sdp1617.webserver.domain.recruitment.application.dto.response.QuestionResponse;
+import com.sdp1617.webserver.domain.recruitment.application.dto.response.ApplicationFormDataResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.RecruitmentResponse;
 import com.sdp1617.webserver.global.common.response.result.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,8 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Recruitment", description = "모집 공고 API")
 @RestController
@@ -36,14 +34,14 @@ public class RecruitmentController {
 
     @GetMapping("/{recruitmentId}/questions")
     @Operation(
-            summary = "질문 목록 조회",
-            description = "모집 공고의 질문 목록을 조회합니다. 공통 질문과 선택한 부서의 질문을 함께 반환합니다."
+            summary = "지원서 작성 데이터 조회",
+            description = "모집 공고의 질문 목록과 면접 가능 시간 슬롯을 함께 반환합니다."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공"),
             @ApiResponse(responseCode = "404", description = "모집 공고 없음")
     })
-    public SuccessResponse<List<QuestionResponse>> getQuestions(
+    public SuccessResponse<ApplicationFormDataResponse> getQuestions(
             @Parameter(description = "모집 공고 ID", example = "1")
             @PathVariable Long recruitmentId,
             @Parameter(description = "부서 (RESEARCH / DESIGN / TECH), 반드시 대문자로 입력", example = "TECH")

@@ -4,6 +4,7 @@ import com.sdp1617.webserver.domain.apply.entity.Apply;
 import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
 import com.sdp1617.webserver.domain.apply.entity.ApplyStatus;
 import com.sdp1617.webserver.domain.apply.entity.Department;
+import com.sdp1617.webserver.domain.interview.entity.InterviewSlotSelection;
 import com.sdp1617.webserver.domain.question.entity.Question;
 
 import java.time.LocalDate;
@@ -24,9 +25,10 @@ public record ApplicationFormDetailResponse(
         ApplyStatus status,
         LocalDateTime submittedAt,
         String reviewerNote,
-        List<AnswerResponse> answers
+        List<AnswerResponse> answers,
+        List<InterviewSlotInfo> interviewSlots
 ) {
-    public static ApplicationFormDetailResponse from(Apply apply, List<ApplyAnswer> applyAnswers) {
+    public static ApplicationFormDetailResponse from(Apply apply, List<ApplyAnswer> applyAnswers, List<InterviewSlotSelection> slotSelections) {
         return new ApplicationFormDetailResponse(
                 apply.getId(),
                 apply.getRecruitment().getTitle(),
@@ -43,6 +45,9 @@ public record ApplicationFormDetailResponse(
                 apply.getReviewerNote(),
                 applyAnswers.stream()
                         .map(AnswerResponse::from)
+                        .toList(),
+                slotSelections.stream()
+                        .map(s -> new InterviewSlotInfo(s.getInterviewSlot().getId(), s.getInterviewSlot().getSlotDateTime()))
                         .toList()
         );
     }
@@ -63,4 +68,9 @@ public record ApplicationFormDetailResponse(
             );
         }
     }
+
+    public record InterviewSlotInfo(
+            Long slotId,
+            LocalDateTime slotDateTime
+    ) {}
 }

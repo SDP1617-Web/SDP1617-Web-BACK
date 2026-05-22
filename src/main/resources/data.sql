@@ -45,3 +45,23 @@ WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence =
 INSERT INTO question (recruitment_id, department, tech_role, content, max_length, sequence, created_at, updated_at)
 SELECT 1, 'TECH', 'BACKEND', '사용해본 백엔드 기술 스택과 경험을 작성해주세요.', 500, 4, NOW(), NOW()
 WHERE NOT EXISTS (SELECT 1 FROM question WHERE recruitment_id = 1 AND sequence = 4 AND tech_role = 'BACKEND');
+
+INSERT INTO interview_slot (recruitment_id, slot_date_time, created_at, updated_at)
+SELECT 1, '2026-06-14 10:00:00', NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM interview_slot WHERE recruitment_id = 1 AND slot_date_time = '2026-06-14 10:00:00');
+
+INSERT INTO interview_slot (recruitment_id, slot_date_time, created_at, updated_at)
+SELECT 1, '2026-06-14 11:00:00', NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM interview_slot WHERE recruitment_id = 1 AND slot_date_time = '2026-06-14 11:00:00');
+
+INSERT INTO interview_slot (recruitment_id, slot_date_time, created_at, updated_at)
+SELECT 1, '2026-06-14 14:00:00', NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM interview_slot WHERE recruitment_id = 1 AND slot_date_time = '2026-06-14 14:00:00');
+
+INSERT INTO interview_slot (recruitment_id, slot_date_time, created_at, updated_at)
+SELECT 1, '2026-06-15 10:00:00', NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM interview_slot WHERE recruitment_id = 1 AND slot_date_time = '2026-06-15 10:00:00');
+
+INSERT INTO interview_slot (recruitment_id, slot_date_time, created_at, updated_at)
+SELECT 1, '2026-06-15 13:00:00', NOW(), NOW()
+WHERE NOT EXISTS (SELECT 1 FROM interview_slot WHERE recruitment_id = 1 AND slot_date_time = '2026-06-15 13:00:00');

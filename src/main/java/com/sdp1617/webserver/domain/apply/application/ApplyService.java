@@ -12,6 +12,9 @@ import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.apply.entity.ApplyAnswer;
 import com.sdp1617.webserver.domain.apply.infrastructure.ApplyAnswerRepository;
 import com.sdp1617.webserver.domain.apply.infrastructure.ApplyRepository;
+import com.sdp1617.webserver.domain.interview.entity.InterviewSlotSelection;
+import com.sdp1617.webserver.domain.interview.infrastructure.InterviewSlotRepository;
+import com.sdp1617.webserver.domain.interview.infrastructure.InterviewSlotSelectionRepository;
 import com.sdp1617.webserver.domain.question.entity.Question;
 import com.sdp1617.webserver.domain.question.infrastructure.QuestionRepository;
 import com.sdp1617.webserver.domain.recruitment.entity.Recruitment;
@@ -36,6 +39,8 @@ public class ApplyService {
     private final ApplyRepository applicationRepository;
     private final ApplyAnswerRepository applicationAnswerRepository;
     private final QuestionRepository questionRepository;
+    private final InterviewSlotRepository interviewSlotRepository;
+    private final InterviewSlotSelectionRepository interviewSlotSelectionRepository;
 
     public ApplySubmitResponse submit(Long recruitmentId, ApplySubmitRequest request) {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
@@ -103,6 +108,27 @@ public class ApplyService {
                 .toList();
 
         applicationAnswerRepository.saveAll(answers);
+
+        List<Long> slotIds = request.interviewSlotIds() == null ? List.of() : request.interviewSlotIds();
+
+        if (!slotIds.isEmpty()) {
+            if (slotIds.size() != slotIds.stream().distinct().count()) {
+                throw new ApplicationException(ApplyErrorCode.DUPLICATE_INTERVIEW_SLOT);
+            }
+
+            long validCount = interviewSlotRepository.countByRecruitmentIdAndIdIn(recruitmentId, slotIds);
+            if (validCount != slotIds.size()) {
+                throw new ApplicationException(ApplyErrorCode.INVALID_INTERVIEW_SLOT);
+            }
+
+            List<InterviewSlotSelection> selections = slotIds.stream()
+                    .map(slotId -> InterviewSlotSelection.builder()
+                            .interviewSlot(interviewSlotRepository.getReferenceById(slotId))
+                            .apply(application)
+                            .build())
+                    .toList();
+            interviewSlotSelectionRepository.saveAll(selections);
+        }
 
         return new ApplySubmitResponse(application.getId());
     }

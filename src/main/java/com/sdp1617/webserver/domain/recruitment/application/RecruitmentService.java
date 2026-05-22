@@ -2,6 +2,9 @@ package com.sdp1617.webserver.domain.recruitment.application;
 
 import com.sdp1617.webserver.domain.apply.entity.Department;
 import com.sdp1617.webserver.domain.apply.entity.TechRole;
+import com.sdp1617.webserver.domain.interview.infrastructure.InterviewSlotRepository;
+import com.sdp1617.webserver.domain.recruitment.application.dto.response.ApplicationFormDataResponse;
+import com.sdp1617.webserver.domain.recruitment.application.dto.response.InterviewSlotSimpleResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.QuestionResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.RecruitmentResponse;
 import com.sdp1617.webserver.domain.recruitment.application.exception.RecruitmentErrorCode;
@@ -23,6 +26,7 @@ public class RecruitmentService {
 
     private final RecruitmentRepository recruitmentRepository;
     private final QuestionRepository questionRepository;
+    private final InterviewSlotRepository interviewSlotRepository;
 
     public RecruitmentResponse getActive() {
         Recruitment recruitment = recruitmentRepository.findActiveRecruitment(LocalDateTime.now())
@@ -30,7 +34,7 @@ public class RecruitmentService {
         return RecruitmentResponse.from(recruitment);
     }
 
-    public List<QuestionResponse> getQuestions(Long recruitmentId, Department department, TechRole techRole) {
+    public ApplicationFormDataResponse getQuestions(Long recruitmentId, Department department, TechRole techRole) {
         if (!recruitmentRepository.existsById(recruitmentId)) {
             throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
         }
@@ -39,8 +43,17 @@ public class RecruitmentService {
         if (department == Department.TECH && effectiveTechRole == null) {
             throw new ApplicationException(RecruitmentErrorCode.TECH_ROLE_REQUIRED);
         }
-        return questionRepository.findRequiredQuestions(recruitmentId, department, effectiveTechRole).stream()
+
+        List<QuestionResponse> questions = questionRepository
+                .findRequiredQuestions(recruitmentId, department, effectiveTechRole).stream()
                 .map(QuestionResponse::from)
                 .toList();
+
+        List<InterviewSlotSimpleResponse> interviewSlots = interviewSlotRepository
+                .findAllByRecruitmentIdAndSlotDateTimeAfterOrderBySlotDateTimeAsc(recruitmentId, LocalDateTime.now()).stream()
+                .map(InterviewSlotSimpleResponse::from)
+                .toList();
+
+        return new ApplicationFormDataResponse(questions, interviewSlots);
     }
 }
