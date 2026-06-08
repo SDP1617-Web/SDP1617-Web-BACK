@@ -2,9 +2,13 @@ package com.sdp1617.webserver.domain.project.presentation;
 
 import com.sdp1617.webserver.domain.admin.project.application.ProjectService;
 import com.sdp1617.webserver.domain.admin.project.application.dto.response.ProjectResponse;
+import com.sdp1617.webserver.global.common.response.ErrorResponse;
 import com.sdp1617.webserver.global.common.response.result.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +42,11 @@ public class ProjectController {
     @Operation(summary = "프로젝트 상세 조회", description = "프로젝트 상세 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공"),
-            @ApiResponse(responseCode = "404", description = "프로젝트 없음")
+            @ApiResponse(responseCode = "404", description = "프로젝트 없음",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class),
+                            examples = @ExampleObject(value = """
+                                    {"isSuccess":false,"code":"COMMON404","message":"요청한 리소스가 존재하지 않습니다.","result":null}""")))
     })
     public SuccessResponse<ProjectResponse> getProject(
             @Parameter(description = "프로젝트 ID", example = "1")
