@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Application", description = "지원서 API")
+@Tag(name = "Recruitment", description = "모집 공고 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/recruitments/{recruitmentId}/apply")
