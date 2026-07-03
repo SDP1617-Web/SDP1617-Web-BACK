@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Portfolio", description = "포트폴리오 API")
+@Tag(name = "Recruitment", description = "모집 공고 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/apply/{applicationId}/portfolio")
