@@ -3,7 +3,6 @@ package com.sdp1617.webserver.domain.recruitment.application;
 import com.sdp1617.webserver.domain.apply.entity.Department;
 import com.sdp1617.webserver.domain.apply.entity.TechRole;
 import com.sdp1617.webserver.domain.interview.infrastructure.InterviewSlotRepository;
-import com.sdp1617.webserver.domain.recruitment.application.dto.response.ApplicationFormDataResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.InterviewSlotSimpleResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.QuestionResponse;
 import com.sdp1617.webserver.domain.recruitment.application.dto.response.RecruitmentResponse;
@@ -34,7 +33,7 @@ public class RecruitmentService {
         return RecruitmentResponse.from(recruitment);
     }
 
-    public ApplicationFormDataResponse getQuestions(Long recruitmentId, Department department, TechRole techRole) {
+    public List<QuestionResponse> getQuestions(Long recruitmentId, Department department, TechRole techRole) {
         if (!recruitmentRepository.existsById(recruitmentId)) {
             throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
         }
@@ -44,16 +43,20 @@ public class RecruitmentService {
             throw new ApplicationException(RecruitmentErrorCode.TECH_ROLE_REQUIRED);
         }
 
-        List<QuestionResponse> questions = questionRepository
+        return questionRepository
                 .findRequiredQuestions(recruitmentId, department, effectiveTechRole).stream()
                 .map(QuestionResponse::from)
                 .toList();
+    }
 
-        List<InterviewSlotSimpleResponse> interviewSlots = interviewSlotRepository
+    public List<InterviewSlotSimpleResponse> getInterviewSlots(Long recruitmentId) {
+        if (!recruitmentRepository.existsById(recruitmentId)) {
+            throw new ApplicationException(RecruitmentErrorCode.RECRUITMENT_NOT_FOUND);
+        }
+
+        return interviewSlotRepository
                 .findAllByRecruitmentIdAndSlotDateTimeAfterOrderBySlotDateTimeAsc(recruitmentId, LocalDateTime.now()).stream()
                 .map(InterviewSlotSimpleResponse::from)
                 .toList();
-
-        return new ApplicationFormDataResponse(questions, interviewSlots);
     }
 }

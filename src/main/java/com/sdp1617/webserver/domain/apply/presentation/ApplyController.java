@@ -35,7 +35,7 @@ public class ApplyController {
                     - 이메일 기준으로 지원자를 식별하며, 최초 지원 시 지원자 정보가 자동 생성됩니다
                     - answers에는 해당 모집의 공통 문항 + 지원 부서 문항 ID를 포함해야 합니다
                     - department: RESEARCH / DESIGN / TECH
-                    - interviewSlotIds: 면접 가능한 시간 슬롯 ID 목록 (필수, 1개 이상), GET /{recruitmentId}/questions 응답의 interviewSlots 참고
+                    - interviewSlotIds: 면접 가능한 시간 슬롯 ID 목록 (필수, 1개 이상), GET /{recruitmentId}/interview-slots 응답 참고
                     """
     )
     @ApiResponses({
