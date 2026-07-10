@@ -108,11 +108,13 @@ public class GlobalExceptionHandler {
                     .filter(Objects::nonNull)
                     .reduce((first, second) -> second)
                     .orElse(null);
-            errors = List.of(ExceptionResult.ParameterData.builder()
-                    .key(field)
-                    .value(String.valueOf(ife.getValue()))
-                    .reason("허용되지 않는 값입니다.")
-                    .build());
+            if (field != null) {
+                errors = List.of(ExceptionResult.ParameterData.builder()
+                        .key(field)
+                        .value(String.valueOf(ife.getValue()))
+                        .reason("허용되지 않는 값입니다.")
+                        .build());
+            }
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
