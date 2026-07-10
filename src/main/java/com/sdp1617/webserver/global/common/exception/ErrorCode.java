@@ -28,6 +28,8 @@ public enum ErrorCode implements ApiErrorCode {
     SERVER_UNTRACKED_ERROR("COMMON500", "미등록 서버 에러입니다. 서버 팀에 연락주세요.", HttpStatus.INTERNAL_SERVER_ERROR),
     NOT_FOUND("COMMON404", "요청한 리소스가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     INVALID_REQUEST("COMMON400", "잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
+    INVALID_REQUEST_BODY("COMMON400_BODY", "요청 본문을 읽을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    MISSING_REQUEST_PARAMETER("COMMON400_PARAM", "필수 요청 파라미터가 누락되었습니다.", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED("COMMON401", "인증되지 않은 요청입니다.", HttpStatus.UNAUTHORIZED),
     FORBIDDEN("COMMON403", "권한이 부족합니다.", HttpStatus.FORBIDDEN),
     INVALID_PARAMETER("COMMON422", "잘못된 파라미터입니다.", HttpStatus.UNPROCESSABLE_ENTITY),
